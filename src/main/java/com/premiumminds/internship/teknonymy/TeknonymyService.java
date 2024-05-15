@@ -15,9 +15,6 @@ class TeknonymyService implements ITeknonymyService {
    * @return String which is the Teknonymy Name 
    */
   public String getTeknonymy(Person person) {
-	  
-    if (person == null)
-    	return "null";
 
     dfs(person, 0);    
     
@@ -40,7 +37,8 @@ class TeknonymyService implements ITeknonymyService {
 			}
 		}
 	}
-    System.out.println(sb.toString());
+//    System.out.println(globalDepth);
+//    System.out.println(sb.toString());
     return sb.toString();
   };
   
@@ -59,12 +57,9 @@ class TeknonymyService implements ITeknonymyService {
         	  } else if(isOlder(person, oldestChild)) {
         		  oldestChild =  person;
         	  }
-        	  
-        	  globalDepth = depth;
           }
           return;
       }
-
 
       for (Person child : person.children()) {
           dfs(child, depth + 1); 

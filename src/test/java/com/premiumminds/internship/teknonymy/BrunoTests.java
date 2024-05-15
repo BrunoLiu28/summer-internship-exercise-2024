@@ -15,7 +15,7 @@ public class BrunoTests {
 		Person person = new Person("John", 'M', null, LocalDateTime.of(1046, 1, 1, 0, 0));
 		String result = new TeknonymyService().getTeknonymy(person);
 		String expected = "";
-		assertEquals(result, expected);
+		assertEquals(expected, result);
 	}
 
 	@Test
@@ -25,166 +25,221 @@ public class BrunoTests {
 				LocalDateTime.of(1046, 1, 1, 0, 0));
 		String result = new TeknonymyService().getTeknonymy(person);
 		String expected = "father of Holy";
-		assertEquals(result, expected);
+		assertEquals(expected, result);
 	}
 
 	@Test
 	public void Test1() {
-		Person person = new Person("Alice", 'F',
-				new Person[] { new Person("Bob", 'M', null, LocalDateTime.of(1980, 5, 10, 0, 0)),
-						new Person("Charlie", 'M', null, LocalDateTime.of(1982, 8, 15, 0, 0)) },
-				LocalDateTime.of(1978, 3, 20, 0, 0));
+		// Generation 2
+		Person person2 = new Person("Person2", 'M', null, LocalDateTime.of(1918, 8, 5, 0, 0));
 
-		String result = new TeknonymyService().getTeknonymy(person);
-		String expected = "mother of Bob";
-		assertEquals(result, expected);
+		// Generation 1
+		Person person1 = new Person("Person1", 'F', new Person[]{person2}, LocalDateTime.of(1920, 6, 28, 0, 0));
+
+		String result = new TeknonymyService().getTeknonymy(person1);
+		String expected = "mother of Person2";
+		assertEquals(expected, result);
 	}
 
 	@Test
 	public void Test2() {
-		Person person = new Person("John", 'M',
-				new Person[] { new Person("Holy", 'F', null, LocalDateTime.of(1046, 1, 1, 0, 0)) },
-				LocalDateTime.of(1046, 1, 1, 0, 0));
-		String result = new TeknonymyService().getTeknonymy(person);
-		String expected = "father of Holy";
-		assertEquals(result, expected);
+		// Generation 2
+		Person person2 = new Person("Person2", 'M', null, LocalDateTime.of(1918, 8, 5, 0, 0));
+
+		// Generation 1
+		Person person1 = new Person("Person1", 'M', new Person[]{person2}, LocalDateTime.of(1920, 6, 28, 0, 0));
+		String result = new TeknonymyService().getTeknonymy(person1);
+		String expected = "father of Person2";
+		assertEquals(expected, result);
 	}
 
 	@Test
 	public void Test3() {
-		Person person = new Person("Grandpa", 'M',
-				new Person[] { new Person("Dad", 'M',
-						new Person[] { new Person("Son", 'M', null, LocalDateTime.of(2000, 1, 1, 0, 0)),
-								new Person("Daughter", 'F', null, LocalDateTime.of(2002, 3, 15, 0, 0)) },
-						LocalDateTime.of(1975, 7, 12, 0, 0)) },
-				LocalDateTime.of(1950, 12, 25, 0, 0));
+		// Generation 3
+		Person person4 = new Person("Person4", 'F', null, LocalDateTime.of(1955, 4, 30, 0, 0));
+		Person person3 = new Person("Person3", 'M', null, LocalDateTime.of(1952, 10, 15, 0, 0));
 
-		String result = new TeknonymyService().getTeknonymy(person);
-		String expected = "grandfather of Son";
-		assertEquals(result, expected);
+		// Generation 2
+		Person person2 = new Person("Person2", 'M', new Person[]{person3, person4}, LocalDateTime.of(1918, 8, 5, 0, 0));
+
+		// Generation 1
+		Person person1 = new Person("Person1", 'M', new Person[]{person2}, LocalDateTime.of(1920, 6, 28, 0, 0));
+
+		String result = new TeknonymyService().getTeknonymy(person1);
+		String expected = "grandfather of Person3";
+		assertEquals(expected, result);
 	}
 
 	@Test
 	public void Test4() {
-		Person person = new Person("Grandma", 'F', new Person[] { new Person("Mom", 'F',
-				new Person[] { new Person("Son", 'M', null, LocalDateTime.of(1995, 4, 20, 0, 0)),
-						new Person("Daughter", 'F',
-								new Person[] { new Person("Grandchild1", 'M', null, LocalDateTime.of(2020, 6, 1, 0, 0)),
-										new Person("Grandchild2", 'F', null, LocalDateTime.of(2022, 9, 10, 0, 0)) },
-								LocalDateTime.of(1997, 10, 30, 0, 0)) },
-				LocalDateTime.of(1970, 11, 8, 0, 0)) }, LocalDateTime.of(1955, 8, 18, 0, 0));
+		// Generation 3
+		Person person7 = new Person("Person7", 'F', null, LocalDateTime.of(1955, 4, 30, 0, 0));
+		Person person6 = new Person("Person6", 'M', null, LocalDateTime.of(1952, 10, 15, 0, 0));
 
-		String result = new TeknonymyService().getTeknonymy(person);
-		String expected = "great-grandmother of Grandchild1";
-		assertEquals(result, expected);
+		// Generation 2
+		Person person5 = new Person("Person5", 'M', new Person[]{person7}, LocalDateTime.of(1918, 8, 5, 0, 0));
+		Person person4 = new Person("Person4", 'F', null, LocalDateTime.of(1922, 3, 18, 0, 0));
+		Person person3 = new Person("Person3", 'M', null, LocalDateTime.of(1940, 12, 10, 0, 0));
+		Person person2 = new Person("Person2", 'M', new Person[]{person6}, LocalDateTime.of(1938, 4, 15, 0, 0));
+
+		// Generation 1
+		Person person1 = new Person("Person1", 'F', new Person[]{person2, person3, person4, person5}, LocalDateTime.of(1920, 6, 28, 0, 0));
+
+		String result = new TeknonymyService().getTeknonymy(person1);
+		String expected = "grandmother of Person6";
+		assertEquals(expected, result);
 	}
 
 	@Test
 	public void Test5() {
-		Person person = new Person("Grandma", 'F', new Person[] {
-				new Person("Mom", 'F', new Person[] { new Person("Son", 'M', null, LocalDateTime.of(1995, 4, 20, 0, 0)),
-						new Person("Daughter", 'F',
-								new Person[] { new Person("Grandchild1", 'M', null, LocalDateTime.of(2020, 6, 1, 0, 0)),
-										new Person("Grandchild2", 'F', null, LocalDateTime.of(2022, 9, 10, 0, 0)) },
-								LocalDateTime.of(1997, 10, 30, 0, 0)),
-						new Person("Son2", 'M', null, LocalDateTime.of(2000, 8, 15, 0, 0)),
-						new Person("Daughter2", 'F', null, LocalDateTime.of(2003, 3, 5, 0, 0)) },
-						LocalDateTime.of(1970, 11, 8, 0, 0)),
-				new Person("Aunt", 'F',
-						new Person[] { new Person("Cousin1", 'M', null, LocalDateTime.of(1987, 2, 12, 0, 0)),
-								new Person("Cousin2", 'F', null, LocalDateTime.of(1990, 7, 25, 0, 0)) },
-						LocalDateTime.of(1975, 5, 20, 0, 0)) },
-				LocalDateTime.of(1955, 8, 18, 0, 0));
+		// Generation 4
+		Person person10 = new Person("Person10", 'M', null, LocalDateTime.of(1995, 2, 28, 0, 0));
+		Person person9 = new Person("Person9", 'F', null, LocalDateTime.of(1990, 5, 14, 0, 0));
+		Person person8 = new Person("Person8", 'F', null, LocalDateTime.of(1998, 7, 20, 0, 0));
+				
+		// Generation 3
+		Person person7 = new Person("Person7", 'F', new Person[]{person9}, LocalDateTime.of(1955, 4, 30, 0, 0));
+		Person person6 = new Person("Person6", 'M', new Person[]{person8, person10}, LocalDateTime.of(1952, 10, 15, 0, 0));
 
-		String result = new TeknonymyService().getTeknonymy(person);
-		String expected = "great-grandmother of Grandchild1";
-		assertEquals(result, expected);
+		// Generation 2
+		Person person5 = new Person("Person5", 'M', new Person[]{person7}, LocalDateTime.of(1918, 8, 5, 0, 0));
+		Person person4 = new Person("Person4", 'F', null, LocalDateTime.of(1922, 3, 18, 0, 0));
+		Person person3 = new Person("Person3", 'M', null, LocalDateTime.of(1940, 12, 10, 0, 0));
+		Person person2 = new Person("Person2", 'M', new Person[]{person6}, LocalDateTime.of(1938, 4, 15, 0, 0));
+
+		// Generation 1
+		Person person1 = new Person("Person1", 'F', new Person[]{person2, person3, person4, person5}, LocalDateTime.of(1920, 6, 28, 0, 0));
+
+		String result = new TeknonymyService().getTeknonymy(person1);
+		String expected = "great-grandmother of Person9";
+		assertEquals(expected, result);
 	}
 
 	@Test
 	public void Test6() {
-		Person person = new Person("Grandpa", 'M', new Person[] {
-				new Person("Mom", 'F', new Person[] { new Person("Son", 'M', null, LocalDateTime.of(1995, 4, 20, 0, 0)),
-						new Person("Daughter", 'F',
-								new Person[] { new Person("Grandchild1", 'M', null, LocalDateTime.of(2020, 6, 1, 0, 0)),
-										new Person("Grandchild2", 'F', null, LocalDateTime.of(2022, 9, 10, 0, 0)) },
-								LocalDateTime.of(1997, 10, 30, 0, 0)),
-						new Person("Son2", 'M', null, LocalDateTime.of(2000, 8, 15, 0, 0)),
-						new Person("Daughter2", 'F', null, LocalDateTime.of(2003, 3, 5, 0, 0)) },
-						LocalDateTime.of(1970, 11, 8, 0, 0)),
-				new Person("Aunt", 'F',
-						new Person[] { new Person("Cousin1", 'M', null, LocalDateTime.of(1987, 2, 12, 0, 0)),
-								new Person("Cousin2", 'F', new Person[] {
-										new Person("CousinChild1", 'M', null, LocalDateTime.of(2015, 7, 20, 0, 0)),
-										new Person("CousinChild2", 'F', null, LocalDateTime.of(2017, 11, 12, 0, 0)) },
-										LocalDateTime.of(1990, 7, 25, 0, 0)) },
-						LocalDateTime.of(1975, 5, 20, 0, 0)) },
-				LocalDateTime.of(1955, 8, 18, 0, 0));
 
-		String result = new TeknonymyService().getTeknonymy(person);
-		String expected = "great-grandfather of CousinChild1";
-		assertEquals(result, expected);
+		// Generation 4
+		Person person9 = new Person("Person9", 'M', null, LocalDateTime.of(1978, 6, 18, 0, 0));
+		Person person8 = new Person("Person8", 'M', null, LocalDateTime.of(1981, 9, 5, 0, 0));
+
+		// Generation 3
+		Person person7 = new Person("Person7", 'F', null, LocalDateTime.of(1955, 4, 30, 0, 0));
+		Person person6 = new Person("Person6", 'M', new Person[]{person8, person9}, LocalDateTime.of(1952, 10, 15, 0, 0));
+
+		// Generation 2
+		Person person5 = new Person("Person5", 'M', new Person[]{person7}, LocalDateTime.of(1918, 8, 5, 0, 0));
+		Person person4 = new Person("Person4", 'F', null, LocalDateTime.of(1922, 3, 18, 0, 0));
+		Person person3 = new Person("Person3", 'M', null, LocalDateTime.of(1940, 12, 10, 0, 0));
+		Person person2 = new Person("Person2", 'M', new Person[]{person6}, LocalDateTime.of(1938, 4, 15, 0, 0));
+
+		// Generation 1
+		Person person1 = new Person("Person1", 'M', new Person[]{person2, person3, person4, person5}, LocalDateTime.of(1920, 6, 28, 0, 0));
+
+		String result = new TeknonymyService().getTeknonymy(person1);
+		String expected = "great-grandfather of Person9";
+		assertEquals(expected, result);
 	}
 
 	@Test
 	public void Test7() {
-		Person person = new Person("Great-Grandma", 'M',
-				new Person[] { new Person("Grandpa", 'M',
-						new Person[] { new Person("Grandma", 'F', new Person[] {
-								new Person("Dad", 'M',
-										new Person[] {
-												new Person(
-														"Uncle1", 'M', new Person[] {
-																new Person("Cousin1", 'M',
-																		new Person[] {
-																				new Person("CousinChild1", 'M', null,
-																						LocalDateTime.of(2010, 3, 1, 0,
-																								0)),
-																				new Person("CousinChild2", 'F', null,
-																						LocalDateTime.of(2012, 6, 15, 0,
-																								0)) },
-																		LocalDateTime.of(1980, 8, 25, 0, 0)),
-																new Person("Aunt1", 'F',
-																		new Person[] {
-																				new Person("Cousin3", 'M', null,
-																						LocalDateTime.of(1985, 10, 5, 0,
-																								0)),
-																				new Person("Cousin4", 'F', null,
-																						LocalDateTime.of(1988, 12, 20,
-																								0, 0)) },
-																		LocalDateTime.of(1982, 4, 10, 0, 0)) },
-														LocalDateTime.of(1978, 2, 15, 0, 0)),
-												new Person(
-														"Aunt2", 'F',
-														new Person[] {
-																new Person("Cousin5", 'F', null,
-																		LocalDateTime.of(1989, 3, 12, 0, 0)),
-																new Person("Cousin6", 'M', null,
-																		LocalDateTime.of(1992, 7, 8, 0, 0)) },
-														LocalDateTime.of(1980, 6, 5, 0, 0)) },
-										LocalDateTime.of(1975, 11, 20, 0, 0)),
-								new Person("Uncle2", 'M', new Person[] {
-										new Person("Cousin7", 'M', null, LocalDateTime.of(1987, 9, 30, 0, 0)),
-										new Person("Cousin8", 'F',
-												new Person[] {
-														new Person("Grandchild1", 'M', null,
-																LocalDateTime.of(2010, 1, 10, 0, 0)),
-														new Person("Grandchild2", 'F', null,
-																LocalDateTime.of(2013, 4, 25, 0, 0)) },
-												LocalDateTime.of(1990, 12, 15, 0, 0)) },
-										LocalDateTime.of(1978, 7, 15, 0, 0)),
-								new Person("Aunt3", 'F',
-										new Person[] {
-												new Person("Cousin9", 'M', null, LocalDateTime.of(1983, 5, 18, 0, 0)),
-												new Person("Cousin10", 'F', null,
-														LocalDateTime.of(1986, 8, 22, 0, 0)) },
-										LocalDateTime.of(1980, 10, 10, 0, 0)) },
-								LocalDateTime.of(1955, 3, 8, 0, 0)) },
-						LocalDateTime.of(1950, 8, 12, 0, 0)) },
-				LocalDateTime.of(1920, 12, 25, 0, 0));
+		// Generation 10
+		Person person32 = new Person("Person32", 'M', null, LocalDateTime.of(2075, 2, 28, 0, 0));
+		Person person31 = new Person("Person31", 'F', null, LocalDateTime.of(2078, 5, 14, 0, 0));
+		Person person30 = new Person("Person30", 'F', null, LocalDateTime.of(2083, 7, 20, 0, 0));
+		Person person29 = new Person("Person29", 'M', null, LocalDateTime.of(2070, 11, 8, 0, 0));
 
-		String result = new TeknonymyService().getTeknonymy(person);
-		String expected = "great-great-great-great-grandfather of Cousin3";
-		assertEquals(result, expected);
+		// Generation 9
+		Person person28 = new Person("Person28", 'M', null, LocalDateTime.of(2040, 4, 25, 0, 0));
+		Person person27 = new Person("Person27", 'F', null, LocalDateTime.of(2043, 9, 30, 0, 0));
+		Person person26 = new Person("Person26", 'F', null, LocalDateTime.of(2048, 12, 15, 0, 0));
+		Person person25 = new Person("Person25", 'M', new Person[]{person29, person30, person31, person32}, LocalDateTime.of(2035, 6, 20, 0, 0));
+
+		// Generation 8
+		Person person24 = new Person("Person24", 'M', null, LocalDateTime.of(2010, 2, 15, 0, 0));
+		Person person23 = new Person("Person23", 'F', new Person[]{person26, person28}, LocalDateTime.of(2013, 8, 20, 0, 0));
+		Person person22 = new Person("Person22", 'F', null, LocalDateTime.of(2018, 5, 10, 0, 0));
+		Person person21 = new Person("Person21", 'M', new Person[]{person25, person27}, LocalDateTime.of(2005, 10, 5, 0, 0));
+
+		// Generation 7
+		Person person20 = new Person("Person20", 'M', new Person[]{person24}, LocalDateTime.of(1990, 2, 28, 0, 0));
+		Person person19 = new Person("Person19", 'F', null, LocalDateTime.of(1993, 5, 14, 0, 0));
+		Person person18 = new Person("Person18", 'F', new Person[]{person21, person22, person23}, LocalDateTime.of(1998, 7, 20, 0, 0));
+
+		// Generation 6
+		Person person17 = new Person("Person17", 'F', null, LocalDateTime.of(1995, 9, 8, 0, 0));
+		Person person16 = new Person("Person16", 'M', new Person[]{person18}, LocalDateTime.of(1984, 11, 3, 0, 0));
+		Person person15 = new Person("Person15", 'F', new Person[]{person19, person20}, LocalDateTime.of(1983, 8, 15, 0, 0));
+
+		// Generation 5
+		Person person14 = new Person("Person14", 'M', null, LocalDateTime.of(1991, 1, 20, 0, 0));
+		Person person13 = new Person("Person13", 'F', null, LocalDateTime.of(2015, 7, 12, 0, 0));
+		Person person12 = new Person("Person12", 'M', null, LocalDateTime.of(2018, 10, 30, 0, 0));
+		Person person11 = new Person("Person11", 'F', new Person[]{person16, person17}, LocalDateTime.of(1994, 3, 8, 0, 0));
+		Person person10 = new Person("Person10", 'F', new Person[]{person15}, LocalDateTime.of(1985, 9, 25, 0, 0));
+
+		// Generation 4
+		Person person9 = new Person("Person9", 'M', new Person[]{person11, person13, person14}, LocalDateTime.of(1978, 6, 18, 0, 0));
+		Person person8 = new Person("Person8", 'M', new Person[]{person10, person12}, LocalDateTime.of(1981, 9, 5, 0, 0));
+
+		// Generation 3
+		Person person7 = new Person("Person7", 'F', null, LocalDateTime.of(1955, 4, 30, 0, 0));
+		Person person6 = new Person("Person6", 'M', new Person[]{person8, person9}, LocalDateTime.of(1952, 10, 15, 0, 0));
+
+		// Generation 2
+		Person person5 = new Person("Person5", 'M', new Person[]{person7}, LocalDateTime.of(1918, 8, 5, 0, 0));
+		Person person4 = new Person("Person4", 'F', null, LocalDateTime.of(1922, 3, 18, 0, 0));
+		Person person3 = new Person("Person3", 'M', null, LocalDateTime.of(1940, 12, 10, 0, 0));
+		Person person2 = new Person("Person2", 'M', new Person[]{person6}, LocalDateTime.of(1938, 4, 15, 0, 0));
+
+		// Generation 1
+		Person person1 = new Person("Person1", 'M', new Person[]{person2, person3, person4, person5}, LocalDateTime.of(1920, 6, 28, 0, 0));
+		
+		long initialTime = System.nanoTime();
+		String result = new TeknonymyService().getTeknonymy(person1);
+		long endTime = System.nanoTime() - initialTime;
+//		System.out.println("Total Time: " + endTime);
+		String expected = "great-great-great-great-great-great-great-grandfather of Person29";
+		assertEquals(expected, result);
 	}
+	
+	@Test
+	public void Test8() { 
+		// Generation 15
+		Person person14 = new Person("Person14", 'M', null, LocalDateTime.of(1991, 1, 20, 0, 0));
+		// Generation 14
+		Person person13 = new Person("Person13", 'F', new Person[]{person14}, LocalDateTime.of(2015, 7, 12, 0, 0));
+		// Generation 12
+		Person person12 = new Person("Person12", 'M', new Person[]{person13}, LocalDateTime.of(2018, 10, 30, 0, 0));
+		// Generation 11
+		Person person11 = new Person("Person11", 'F', new Person[]{person12}, LocalDateTime.of(1994, 3, 8, 0, 0));
+		// Generation 10
+		Person person10 = new Person("Person10", 'F', new Person[]{person11}, LocalDateTime.of(1985, 9, 25, 0, 0));
+		// Generation 9
+		Person person9 = new Person("Person9", 'M', new Person[]{person10}, LocalDateTime.of(1978, 6, 18, 0, 0));
+		// Generation 8
+		Person person8 = new Person("Person8", 'M', new Person[]{person9}, LocalDateTime.of(1981, 9, 5, 0, 0));
+		// Generation 7
+		Person person7 = new Person("Person7", 'F', new Person[]{person8}, LocalDateTime.of(1955, 4, 30, 0, 0));
+		// Generation 6
+		Person person6 = new Person("Person6", 'M', new Person[]{person7}, LocalDateTime.of(1952, 10, 15, 0, 0));
+		// Generation 5
+		Person person5 = new Person("Person5", 'M', new Person[]{person6}, LocalDateTime.of(1918, 8, 5, 0, 0));
+		// Generation 4
+		Person person4 = new Person("Person4", 'F', new Person[]{person5}, LocalDateTime.of(1922, 3, 18, 0, 0));
+		// Generation 3
+		Person person3 = new Person("Person3", 'M', new Person[]{person4}, LocalDateTime.of(1940, 12, 10, 0, 0));
+		// Generation 2
+		Person person2 = new Person("Person2", 'M', new Person[]{person3}, LocalDateTime.of(1938, 4, 15, 0, 0));
+		// Generation 1
+		Person person1 = new Person("Person1", 'f', new Person[]{person2}, LocalDateTime.of(1920, 6, 28, 0, 0));
+		
+		long initialTime = System.nanoTime();
+		String result = new TeknonymyService().getTeknonymy(person1);
+		long endTime = System.nanoTime() - initialTime;
+//		System.out.println("Total Time: " + endTime);
+		String expected = "great-great-great-great-great-great-great-great-great-great-great-grandmother of Person14";
+		assertEquals(expected, result);
+	}
+	
+
 }
