@@ -212,9 +212,9 @@ public class BrunoTests {
 		Person person1 = new Person("Person1", 'M', new Person[] { person2, person3, person4, person5 },
 				LocalDateTime.of(1920, 6, 28, 0, 0));
 
-		long initialTime = System.nanoTime();
+//		long initialTime = System.nanoTime();
 		String result = new TeknonymyService().getTeknonymy(person1);
-		long endTime = System.nanoTime() - initialTime;
+//		long endTime = System.nanoTime() - initialTime;
 //		System.out.println("Total Time: " + endTime);
 		String expected = "great-great-great-great-great-great-great-grandfather of Person29";
 		assertEquals(expected, result);
@@ -251,9 +251,9 @@ public class BrunoTests {
 		// Generation 1
 		Person person1 = new Person("Person1", 'f', new Person[] { person2 }, LocalDateTime.of(1920, 6, 28, 0, 0));
 
-		long initialTime = System.nanoTime();
+//		long initialTime = System.nanoTime();
 		String result = new TeknonymyService().getTeknonymy(person1);
-		long endTime = System.nanoTime() - initialTime;
+//		long endTime = System.nanoTime() - initialTime;
 //		System.out.println("Total Time: " + endTime);
 		String expected = "great-great-great-great-great-great-great-great-great-great-great-grandmother of Person14";
 		assertEquals(expected, result);
